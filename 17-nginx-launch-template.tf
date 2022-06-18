@@ -1,7 +1,7 @@
-# launch template for bastion
+# launch template for nginx
 
-resource "aws_launch_template" "bastion-launch-template" {
-  name = "masterclass-bastion"
+resource "aws_launch_template" "nginx-launch-template" {
+  name = "masterclass-nginx"
 
   block_device_mappings {
     device_name = "/dev/sda1"
@@ -30,16 +30,16 @@ resource "aws_launch_template" "bastion-launch-template" {
   }
 
 
-  vpc_security_group_ids = [aws_security_group.bastion-sg.id]
+  vpc_security_group_ids = [aws_security_group.nginx-sg.id]
 
   tag_specifications {
     resource_type = "instance"
 
 
     tags = {
-      Name            = "bastion-launch-template"
+      Name            = "nginx-launch-template"
     }
   }
 
-  user_data = filebase64("${path.module}/bin/bastion.sh")
+  user_data = filebase64("${path.module}/bin/nginx.sh")
 }
