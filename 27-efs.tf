@@ -10,8 +10,8 @@ resource "aws_kms_key" "masterclass-kms" {
       "Sid": "Enable IAM User Permissions",
       "Effect": "Allow",
       "Principal": { "AWS": [
-        "arn:aws:iam::962440223779:user/dare",
-        "arn:aws:iam::962440223779:user/segun"
+        "arn:aws:iam::969933150232:user/chisom_cli",
+        "arn:aws:iam::969933150232:user/sombiri"
       ]
       },
 
@@ -30,7 +30,7 @@ resource "aws_kms_alias" "alias" {
 }
 
 # create Elastic file system
-resource "aws_efs_file_system" "darey-efs" {
+resource "aws_efs_file_system" "chisom-efs" {
   encrypted  = true
   kms_key_id = aws_kms_key.masterclass-kms.arn
 
@@ -42,14 +42,14 @@ resource "aws_efs_file_system" "darey-efs" {
 
 # set first mount target for the EFS 
 resource "aws_efs_mount_target" "subnet-1" {
-  file_system_id  = aws_efs_file_system.darey-efs.id
+  file_system_id  = aws_efs_file_system.chisom-efs.id
   subnet_id       = aws_subnet.PrivateSubnet-3.id
   security_groups = [aws_security_group.datalayer-sg.id]
 }
 
 # set second mount target for the EFS 
 resource "aws_efs_mount_target" "subnet-2" {
-  file_system_id  = aws_efs_file_system.darey-efs.id
+  file_system_id  = aws_efs_file_system.chisom-efs.id
   subnet_id       = aws_subnet.PrivateSubnet-4.id
   security_groups = [aws_security_group.datalayer-sg.id]
 }
@@ -57,7 +57,7 @@ resource "aws_efs_mount_target" "subnet-2" {
 
 # create access point for wordpress
 resource "aws_efs_access_point" "wordpress" {
-  file_system_id = aws_efs_file_system.darey-efs.id
+  file_system_id = aws_efs_file_system.chisom-efs.id
 
   posix_user {
     gid = 0
@@ -80,7 +80,7 @@ resource "aws_efs_access_point" "wordpress" {
 
 # create access point for tooling
 resource "aws_efs_access_point" "tooling" {
-  file_system_id = aws_efs_file_system.darey-efs.id
+  file_system_id = aws_efs_file_system.chisom-efs.id
   posix_user {
     gid = 0
     uid = 0
