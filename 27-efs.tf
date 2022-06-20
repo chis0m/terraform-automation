@@ -35,7 +35,7 @@ resource "aws_efs_file_system" "chisom-efs" {
   kms_key_id = aws_kms_key.masterclass-kms.arn
 
   tags = merge(local.tags,
-  { Name = "project-15-old-cowboy-file-system" })
+  { Name = "myproject-file-system" })
 
 }
 
