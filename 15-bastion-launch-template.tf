@@ -1,7 +1,7 @@
 # launch template for bastion
 
 resource "aws_launch_template" "bastion-launch-template" {
-  name = "masterclass-bastion"
+  name = format("%s%s%s", title(var.env), title(var.base_name), "-BastionLaunchTemplate")
 
   block_device_mappings {
     device_name = "/dev/sda1"
@@ -26,7 +26,7 @@ resource "aws_launch_template" "bastion-launch-template" {
   }
 
   placement {
-    availability_zone = "us-east-1a"
+    availability_zone = var.availability_zones["az_1"]
   }
 
 
@@ -37,7 +37,7 @@ resource "aws_launch_template" "bastion-launch-template" {
 
 
     tags = {
-      Name            = "bastion-launch-template"
+      Name = format("%s%s%s", title(var.env), title(var.base_name), "-BastionLaunchTemplate")
     }
   }
 

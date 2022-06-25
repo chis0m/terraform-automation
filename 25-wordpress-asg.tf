@@ -1,5 +1,5 @@
 resource "aws_autoscaling_group" "wordpress-asg" {
-  name                      = "wordpress-asg"
+  name                      = format("%s%s%s", title(var.env), title(var.base_name), "-Wordpress-ASG")
   max_size                  = 0
   min_size                  = 0
   health_check_grace_period = 300
@@ -7,8 +7,8 @@ resource "aws_autoscaling_group" "wordpress-asg" {
   desired_capacity          = 0
 
   vpc_zone_identifier = [
-    aws_subnet.PrivateSubnet-1.id,
-    aws_subnet.PrivateSubnet-2.id
+    module.network_module.private_subnet["cidr_1"],
+    module.network_module.private_subnet["cidr_2"]
   ]
 
 
@@ -18,7 +18,7 @@ resource "aws_autoscaling_group" "wordpress-asg" {
   }
   tag {
     key                 = "Name"
-    value               = "masterclass-wordpress"
+    value               = format("%s%s%s", title(var.env), title(var.base_name), "-Wordpress-ASG")
     propagate_at_launch = true
   }
 

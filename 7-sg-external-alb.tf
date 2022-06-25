@@ -1,12 +1,12 @@
 ### Create ext-alb-sg security group
 resource "aws_security_group" "ext-alb-sg" {
-  name        = "masterclass-ext-alb-sg"
-  vpc_id      = aws_vpc.main.id
+  name        = format("%s%s%s", title(var.env), title(var.base_name), "-ExtALB-SG")
+  vpc_id      = module.network_module.vpc_id
   description = "External ALB SG"
 
 
   tags = {
-    Name            = "masterclass-ext-alb-sg"
+    Name = format("%s%s%s", title(var.env), title(var.base_name), "-ExtALB-SG")
   }
 
 }

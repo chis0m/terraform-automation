@@ -2,11 +2,11 @@
 #---------------------------------
 
 resource "aws_lb" "external-alb" {
-  name            = "masterclass-external-alb"
+  name            = format("%s%s%s", title(var.env), title(var.base_name), "-External-ALB")
   internal        = false
   security_groups = [aws_security_group.ext-alb-sg.id]
 
-  subnets = [aws_subnet.PublicSubnet-1.id, aws_subnet.PublicSubnet-2.id]
+  subnets = [module.network_module.public_subnet["cidr_1"], module.network_module.public_subnet["cidr_2"]]
 
   tags = merge(local.tags,
   { Name = "project-15-external-alb" })
@@ -31,11 +31,11 @@ resource "aws_lb_listener" "nginx-listner" {
 
 #--- create a target group for the external load balancer
 resource "aws_lb_target_group" "nginx-tgt" {
-  name        = "masterclass-nginx-tgt"
+  name        = format("%s%s%s", title(var.env), title(var.base_name), "-Nginx-TGT")
   port        = 80
   protocol    = "HTTP"
   target_type = "instance"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = module.network_module.vpc_id
   health_check {
     interval            = 10
     path                = "/healthstatus"

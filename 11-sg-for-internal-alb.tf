@@ -1,12 +1,12 @@
 # security group for alb, to allow acess from any where for HTTP and HTTPS traffic
 resource "aws_security_group" "int-alb-sg" {
-  name        = "masterclass-int-alb-sg"
-  vpc_id      = aws_vpc.main.id
+  name        = format("%s%s%s", title(var.env), title(var.base_name), "-InternalALB-SG")
+  vpc_id      = module.network_module.vpc_id
   description = "Internal SG ALB"
 
 
   tags = {
-    Name            = "masterclass-int-alb-sg"
+    Name = format("%s%s%s", title(var.env), title(var.base_name), "-InternalALB-SG")
   }
 
 }
