@@ -1,11 +1,11 @@
 # security group for alb, to allow acess from any where for HTTP and HTTPS traffic
 resource "aws_security_group" "tooling-sg" {
-  name        = "masterclass-tooling-sg"
-  vpc_id      = aws_vpc.main.id
+  name        = format("%s%s%s", title(var.env), title(var.base_name), "-Tooling-SG")
+  vpc_id      = module.network_module.vpc_id
   description = "tooling SG"
 
   tags = {
-    Name            = "masterclass-tooling-sg"
+    Name = format("%s%s%s", title(var.env), title(var.base_name), "-Tooling-SG")
   }
 
 }

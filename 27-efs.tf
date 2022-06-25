@@ -43,14 +43,14 @@ resource "aws_efs_file_system" "chisom-efs" {
 # set first mount target for the EFS 
 resource "aws_efs_mount_target" "subnet-1" {
   file_system_id  = aws_efs_file_system.chisom-efs.id
-  subnet_id       = aws_subnet.PrivateSubnet-3.id
+  subnet_id       = module.network_module.private_subnet["cidr_3"]
   security_groups = [aws_security_group.datalayer-sg.id]
 }
 
 # set second mount target for the EFS 
 resource "aws_efs_mount_target" "subnet-2" {
   file_system_id  = aws_efs_file_system.chisom-efs.id
-  subnet_id       = aws_subnet.PrivateSubnet-4.id
+  subnet_id       = module.network_module.private_subnet["cidr_4"]
   security_groups = [aws_security_group.datalayer-sg.id]
 }
 

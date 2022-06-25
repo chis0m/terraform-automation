@@ -1,7 +1,7 @@
 # launch template for tooling
 
 resource "aws_launch_template" "tooling-launch-template" {
-  name = "masterclass-tooling"
+  name = format("%s%s%s", title(var.env), title(var.base_name), "-ToolingLaunchTemplate")
 
   block_device_mappings {
     device_name = "/dev/sda1"
@@ -26,7 +26,7 @@ resource "aws_launch_template" "tooling-launch-template" {
   }
 
   placement {
-    availability_zone = "us-east-1a"
+    availability_zone = var.availability_zones["az_1"]
   }
 
 
@@ -37,7 +37,7 @@ resource "aws_launch_template" "tooling-launch-template" {
 
 
     tags = {
-      Name            = "tooling-launch-template"
+      Name = format("%s%s%s", title(var.env), title(var.base_name), "-ToolingLaunchTemplate")
     }
   }
 

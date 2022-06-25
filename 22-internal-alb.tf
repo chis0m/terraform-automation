@@ -3,13 +3,15 @@
 #---------------------------------
 
 resource "aws_lb" "internal-alb" {
-  name     = "masterclass-internal-alb"
+  name     = format("%s%s%s", title(var.env), title(var.base_name), "-Internal-ALB")
   internal = true
 
   security_groups = [aws_security_group.int-alb-sg.id]
 
-  subnets = [aws_subnet.PrivateSubnet-1.id,
-  aws_subnet.PrivateSubnet-2.id]
+  subnets = [
+    module.network_module.private_subnet["cidr_1"],
+    module.network_module.private_subnet["cidr_2"]
+  ]
   tags = merge(local.tags,
   { Name = "project-15-internal-alb" })
   ip_address_type    = "ipv4"
@@ -29,11 +31,11 @@ resource "aws_lb_target_group" "wordpress-tgt" {
     unhealthy_threshold = 2
   }
 
-  name        = "masterclass-wordpress-tgt"
+  name        = format("%s%s%s", title(var.env), title(var.base_name), "-Wordpress-TGT")
   port        = 80
   protocol    = "HTTP"
   target_type = "instance"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = module.network_module.vpc_id
 }
 
 
@@ -49,11 +51,11 @@ resource "aws_lb_target_group" "tooling-tgt" {
     unhealthy_threshold = 2
   }
 
-  name        = "masterclass-tooling-tgt"
+  name        = format("%s%s%s", title(var.env), title(var.base_name), "-Tooling-TGT")
   port        = 80
   protocol    = "HTTP"
   target_type = "instance"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = module.network_module.vpc_id
 }
 
 # For this aspect a single listener was created for the wordpress which is default,
@@ -84,7 +86,7 @@ resource "aws_lb_listener_rule" "tooling-listener" {
 
   condition {
     host_header {
-      values = ["tooling.darey.io"]
+      values = ["tooling.chisomejim.link"]
     }
   }
 }
@@ -103,7 +105,7 @@ resource "aws_lb_listener_rule" "wordpress-listener" {
 
   condition {
     host_header {
-      values = ["wordpress.darey.io"]
+      values = ["wordpress.chisomejim.link"]
     }
   }
 }
