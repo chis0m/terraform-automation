@@ -1,6 +1,6 @@
 module "network_module" {
 
-  source = "github.com/chis0m/tf-network-module?ref=v1.0.3"
+  source = "github.com/chis0m/tf-network-module?ref=v1.0.4"
 
   base_name           = var.base_name
   env                 = var.env
